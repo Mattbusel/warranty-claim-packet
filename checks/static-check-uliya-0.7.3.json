@@ -1,0 +1,34 @@
+{
+  "checkFormatVersion": "2.0.0",
+  "status": "static-pass",
+  "target": {
+    "skillName": "warranty-claim-packet"
+  },
+  "catalog": {
+    "checkedVersion": "2.0.0"
+  },
+  "files": [
+    {
+      "path": "references/claim-packet.md",
+      "sha256": "435edf280b4473b462e5f7245c31a1c51170cdfe6ad10cb80dd920bba1a5c0b6"
+    },
+    {
+      "path": "references/coverage-rules.md",
+      "sha256": "a55272ffa321a7c8f4901b18500971ef43fb475eb3ec33d40fdc221f802add42"
+    },
+    {
+      "path": "references/disclosure.md",
+      "sha256": "359b2d38288cfa363e25ef50959e4cd58d1880b782a92690ed2d809153719940"
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "6686b00cbdce00c44c34382e764d39f2d3dc1acaa567589ee5bc8c138ea33e4d"
+    }
+  ],
+  "summary": {
+    "errors": 0,
+    "warnings": 0,
+    "info": 0
+  },
+  "diagnostics": []
+}

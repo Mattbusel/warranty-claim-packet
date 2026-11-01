@@ -1,0 +1,23 @@
+name: uliya-check
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fetch the official UGREEN Skill Developer Package (uliya-skill-kit 0.7.3)
+        run: |
+          curl -sSL -o kit.zip "https://cdn.shopify.com/s/files/1/0630/9416/1602/files/uliya-skill-kit-0.7.3-en.zip?v=1790578898"
+          unzip -q kit.zip -d kit
+      - name: Static check (must be static-pass with zero warnings)
+        run: |
+          node kit/uliya-skill-kit/scripts/check-skill.mjs warranty-claim-packet | tee result.json
+          node -e "const r=require('./result.json'); if (r.status!=='static-pass') { console.error('status', r.status); process.exit(1) }"
+      - name: Package limits and zip
+        run: |
+          zip -r -q warranty-claim-packet.zip warranty-claim-packet
+          unzip -l warranty-claim-packet.zip
+          test $(stat -c%s warranty-claim-packet.zip) -lt 10485760

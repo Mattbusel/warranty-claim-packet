@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Warranty Claim Packet: Project Proposal</title>
+<style>
+  @page { size: Letter; margin: 0.45in 0.55in; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 9.9pt; line-height: 1.32; color: #111; }
+  h1 { font-size: 17pt; margin: 0 0 2px; }
+  .sub { color: #444; margin: 0 0 10px; font-size: 9.5pt; }
+  h2 { font-size: 10.6pt; margin: 9px 0 2px; color: #0b5a3a; }
+  p { margin: 0 0 3px; }
+  ol.flow { margin: 2px 0 3px 18px; padding: 0; }
+  ol.flow li { margin: 0; }
+  .meta { border-top: 1px solid #bbb; margin-top: 10px; padding-top: 6px; font-size: 9pt; color: #333; }
+  code { font-family: Consolas, monospace; font-size: 9pt; }
+</style>
+</head>
+<body>
+<h1>Warranty Claim Packet</h1>
+<p class="sub">UGREEN Hackathon 2026 on AI NAS, Round 1 proposal. Track: Automate Your Workflow. Skill name: <code>warranty-claim-packet</code>.</p>
+
+<div id="answers">
+<h2>1. What does your Skill do?</h2>
+<p>It finds receipts, warranty terms and serial photos scattered across the NAS, shows which purchases are still covered, and assembles a ready-to-send claim packet when something breaks.</p>
+
+<h2>2. Who is the target user, and what is their problem?</h2>
+<p>Households and small offices that back up phones and invoices to their NAS. When a dishwasher or laptop fails, the receipt is an old phone photo, the manual a PDF in Downloads, the serial on a label photo. Unable to prove the date or check the term quickly, people pay for covered repairs.</p>
+
+<h2>3. What is your solution?</h2>
+<p><b>Ledger</b>: one table of purchases with proof file, term, expiry and status (covered, expiring soon, expired, term unknown, no proof found). <b>Claim</b>: for one broken item, a dated verdict citing the warranty clause, a claim letter drafted only from verified facts, and a folder of copied evidence.</p>
+
+<h2>4. What is the main user flow?</h2>
+<ol class="flow">
+<li>User: "My dishwasher stopped draining. Am I still covered?"</li>
+<li>Skill confirms item and fault, searches documents and photos.</li>
+<li>Extracts purchase records, serial number and warranty clause.</li>
+<li>Shows the verdict with sources and a draft letter to edit.</li>
+<li>After approval, saves Warranty/Claims/[item, date] with evidence copies, letter and checklist.</li>
+</ol>
+
+<h2>5. How is your idea different from existing tools or common AI solutions?</h2>
+<p>Chat assistants answer from what you paste; file search matches names. This joins invoice PDFs, receipt photos and manuals into one cited verdict, never guesses a date or term ("term unknown" is a status), and outputs a packet support agents accept. Financial documents never leave the NAS.</p>
+
+<h2>6. Which UGREEN AI NAS features does your Skill use, and at which step?</h2>
+<p>Step 1: file-workflow get-user-dir. 2: ug-filesystem find. 3: ug-photo OCR search. 4: ug-document extract (receipt, invoice schemas). 5: ug-photo vision-ocr, vision-vlm on the local model. 6: ug-document qa. 8: ug-document writing. 9: ug-filesystem mkdir, cpmv (copy), ug-knowledge save-text, ug-filemgr tags.</p>
+
+<h2>7. What is your technical approach?</h2>
+<p>Pure orchestration SKILL.md (Uliya standard) delegating to file-agent, photo-agent, document-agent and knowledge-agent. Named values carry real expert results between steps; a missing value stops dependent steps. Read-only until the user approves a write; originals are copied, never moved. All five delegation states handled; card numbers masked. Inputs: mode, item, fault, optional scope.</p>
+
+<h2>8. What have you built so far? What is not built yet? What still needs testing on a NAS?</h2>
+<p>Built: complete SKILL.md, coverage rules with date edge cases, packet spec, disclosure; official checker 0.7.3 reports static-pass, 0 errors, 0 warnings. Not built: keyword tuning on real libraries. Needs a NAS: OCR recall on receipt photos, extraction from order-confirmation PDFs, approval prompts for writes, tag creation.</p>
+
+<h2>9. How will you test your Skill if you become a Finalist?</h2>
+<p>Core 1: ledger over 8 seeded purchases (PDF invoices, receipt photos, 4 manuals); each row needs correct expiry, status and sources. Core 2: claim for a dishwasher bought 14 months ago with a 24-month term; expect "covered", a letter, 3 copies and 2 Markdown files, originals unchanged. Edge: illegible receipt date, no manual; expect "no proof found", no letter, nothing written.</p>
+
+<h2>10. What are the known limits, risks, or outside dependencies of your Skill?</h2>
+<p>Depends on OCR quality and on manuals stating a term. Credit-card extensions and statutory guarantees are not evaluated unless a stored document states them. Runs cap at 300 documents and 60 photos. No outside dependencies.</p>
+</div>
+
+<div class="meta">
+<p><b>Entrant:</b> Matthew Busel (individual entrant). Electronic signature: /s/ Matthew Busel, November 1, 2026.</p>
+<p><b>Third-party components and licenses:</b> none bundled; the package contains only Markdown written by the entrant. Built with the official UGREEN Skill Developer Package (uliya-skill-kit 0.7.3, capability catalog 2.0.0) under the UGREEN Skill Hub User Agreement and publishing guidelines; no kit file is redistributed. AI tool: Claude (Anthropic) in Claude Code for drafting and checking, directed and reviewed by the entrant. Source: github.com/Mattbusel/warranty-claim-packet (MIT).</p>
+</div>
+</body>
+</html>
